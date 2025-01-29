@@ -1,3 +1,7 @@
+# High level system diagram
+![social-assessment-high-level](https://github.com/user-attachments/assets/38ecd66a-3b09-4592-b90b-bf2f50b39a81)
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
