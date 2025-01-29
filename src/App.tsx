@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import React, { useState } from 'react';
 import { ComprehendClient, DetectSentimentCommand } from '@aws-sdk/client-comprehend';
 import './App.css';
 
@@ -6,7 +6,7 @@ import './App.css';
 interface SentimentResult {
 	text: string,
   	score: {
-		Postive: number,
+		Positive: number,
 		Negative: number,
 		Neutral: number,
 		Mixed: number,
@@ -29,7 +29,35 @@ function App() {
 
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
+		if (!inputText.trim()) return;
+
+		try {
+			const command = new DetectSentimentCommand({
+				Text: inputText,
+				LanguageCode: 'en'
+			});
+
+			const response = await client.send(command);
+
+			setResults(prev => [
+				{
+					text: inputText,
+					score: {
+						Positive: response.SentimentScore?.Positive || 0,
+						Negative: response.SentimentScore?.Negative || 0,
+						Neutral: response.SentimentScore?.Neutral || 0,
+						Mixed: response.SentimentScore?.Mixed || 0,
+					}
+				},
+				...prev
+			]);
+		}
+		catch (error) {
+			console.log(`Analysis failed: ${error}`);
+		}
 	};
+
+	
 
 	return (
 		<div className="App">
@@ -42,6 +70,25 @@ function App() {
 				/>
 				<button type="submit">
 					Get Sentiment
+				</button>
+				<button 
+					type="button"
+					onClick={async () => {
+						try {
+						const testCommand = new DetectSentimentCommand({
+							Text: "I love this wonderful product!",
+							LanguageCode: 'en'
+						});
+						const response = await client.send(testCommand);
+						console.log("AWS TEST RESPONSE:", response);
+						alert("AWS connection successful!\nSentiment: " + response.Sentiment);
+						} catch (error) {
+						console.error("AWS TEST FAILED:", error);
+						alert("Connection failed. Check console for details.");
+						}
+					}}
+					>
+					Test AWS Connection
 				</button>
 			</form>
 		</div>
