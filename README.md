@@ -1,5 +1,6 @@
 # High level system diagram
-![social-assessment-high-level](https://github.com/user-attachments/assets/38ecd66a-3b09-4592-b90b-bf2f50b39a81)
+![Social Engineer Assessment](https://github.com/user-attachments/assets/2e198abb-3cec-48f6-a847-9d9d9947d97f)
+
 
 
 # Getting Started with Create React App
