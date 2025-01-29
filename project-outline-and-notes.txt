@@ -28,3 +28,7 @@ Dont go overboard here, sometimes less is more. Doing too much might be perceive
 - security
     - dont expose env variables, allow them to easily input their own api keys for quick spin up time
     - make sure the calls are safe
+
+TODO: Create a readme
+TODO: Create a high level diagram for the project
+TODO: Include .env template 
