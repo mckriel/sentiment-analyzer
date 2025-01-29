@@ -1,0 +1,30 @@
+Build a React app that:
+- takes user text input (add some validation/regex?)
+- aws Comprehend for real-time sentiment analysis (setup api keys, read docs etc)
+- displays results sorted by sentiment positivity (add some kind of visual element to the scoring, colors, icons etc)
+- tests for the sorting logic (account for no inputs, numbers, garbage data, etc)
+
+Key components:
+- react form with text input and submission handling. Button disabled till requirements met, messaging/text boxes to make this clear to the user?
+- aws sdk integration for sentiment detection (read docs, get basics in place, get an api key)
+- sorting algorithm for sentiment results. Be sure to have the best possible big o notation scoring. Use external tool to analyse algorithm. Should I show my iterations as I improve or only show the final product? Give this some thought
+- test suite with edge case coverage. Be comprehensive but not over the top. Vitest is my main testing platform, read docs on JEST to get up to speed. Hopefully syntax is similar
+- readable concise code. SOLID as much as possible, not critical for something of this size thought
+- Big O analysis. How to show that this has been considered though?
+
+Considerations:
+Dont go overboard here, sometimes less is more. Doing too much might be perceived as not listening to requirements.
+- sorting strategy
+    - how many kinds of sorts do I need to include? 
+    - how does that look visually on the page?
+- performance
+    - perhaps memoize functionality to show performance consideration?
+    - decide on localdb schema, should be quite simple
+    - is analytics over the top? probably so. dont include
+- error handling
+    - try-catch pretty much everything
+    - readable error messages, as far as possible
+    - input validation (covered previously)
+- security
+    - dont expose env variables, allow them to easily input their own api keys for quick spin up time
+    - make sure the calls are safe
