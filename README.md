@@ -1,51 +1,36 @@
-# High level system diagram
-![Social Engineer Assessment](https://github.com/user-attachments/assets/2e198abb-3cec-48f6-a847-9d9d9947d97f)
+# Sentiment Analyzer
+<img width="575" alt="Screenshot 2025-01-30 at 13 46 35" src="https://github.com/user-attachments/assets/10ba5fa5-7fd0-485c-a1f6-9f03055b039d" />
 
+## Approach and assumptions
+### Approach
+1. Only the sentiment score of the return sentiment will be displayed. This is to avoid clutter, provide a cleaner UI and not overload the user with information
+2. Two primary files are to be used, namely
+3. Test suite will only cover the sorting logic
+4. Effiency and time complexity of sorting function was taken into consideration, however ultimately decided to go with the cleanest and most readable approach. See `misc-notes.txt` in root directory
+### Assumptions:
+1. Testing suite is only to cover the sorting logic as per the requirements documentation. No testing included for UI interactions or API calls
+2. Presumed ordering is: positive > neutral > mixed > negative
+3. Only using the dominant sentiment score is fine for this use case
+## High level diagram
+![social-assessment-high-level](https://github.com/user-attachments/assets/ee506868-9a36-41ef-b81a-707b03ef4c9c)
+## Original UI diagram
+![Social Engineer Assessment](https://github.com/user-attachments/assets/64a8d4de-9327-4b29-bfcb-4dbdf20ceed0)
+## Installation
+### .env.template
+ 1. A template for the .env file structure is provided
+ 2. Remove the placeholder text and insert your own API keys and AWS region
+ 3. Rename the file to .env
+### Installation
+Simply run:
 
+    nmp install
+    npm start
+To run the test suite:
 
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+    npm test -- --coverage
+### Test coverage:
+1. Sorts by sentiment priority (POSITIVE > NEUTRAL > MIXED > NEGATIVE)
+2. Sorts by score descending within same sentiment
+3. Returns 0 for identical sentiment scores of the same sentiment
+4. Sorts null values to the bottom
+5. Handles identical objects
