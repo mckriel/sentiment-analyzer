@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ComprehendClient, DetectSentimentCommand } from '@aws-sdk/client-comprehend';
 import './App.css';
 
@@ -17,28 +17,13 @@ export const SENTIMENT_PRIORITY: Record<string, number> = {
 	'negative': 3,
 };
 
-// purely for testing
-export function compareSentiments(a: SentimentResult | null, b: SentimentResult | null): number {
-	// handle null or undefined
-	if (a === null || a === undefined) {
-        if (b === null || b === undefined) return 0;
-        return 1;
-    }
-    if (b === null || b === undefined) return -1;
-  
-	const priorityA = SENTIMENT_PRIORITY[a.sentiment.toLowerCase() as keyof typeof SENTIMENT_PRIORITY];
-	const priorityB = SENTIMENT_PRIORITY[b.sentiment.toLowerCase() as keyof typeof SENTIMENT_PRIORITY];
-  
-	// checks the sentiment priority according to the defined order
+export function compareSentiments(a: SentimentResult, b: SentimentResult) {
 	// if a < b ==> a before b
 	// if a > b ==> b before a
-	// if a === b ==> no change, move to next sort level(the numeric score)
-	if (priorityA !== priorityB) return priorityA - priorityB;
-	
-	// if a < b ==> a before b
-	// if a > b ==> b before a
-	// if a === b ==> no change (extremely rare)
-	return b.score - a.score;
+	// if a === b ==> no change
+	const priorityA = SENTIMENT_PRIORITY[a.sentiment];
+	const priorityB = SENTIMENT_PRIORITY[b.sentiment];
+	return priorityA - priorityB || b.score - a.score;
 }
 
 
@@ -76,19 +61,22 @@ function App() {
 			};
 
 			// mapping aws sentiment to local keys
-			type SentimentKey = 'Positive' | 'Negative' | 'Neutral' | 'Mixed';
-			const sentimentMap: Record<string, SentimentKey> ={
+			// type SentimentKey = 'Positive' | 'Negative' | 'Neutral' | 'Mixed';
+			const sentimentMap: Record<string, keyof typeof sentimentScore> = {
 				'POSITIVE': 'Positive',
 				'NEGATIVE': 'Negative',
 				'NEUTRAL': 'Neutral',
-				'MIXED': 'Mixed',
+				'MIXED': 'Mixed'
 			};
 
 			// determines dominant score
 			const awsSentiment = response.Sentiment || 'NEUTRAL';
-			const scoreKey = sentimentMap[awsSentiment] || 'Neutral';
-			const dominantScore = parseFloat(((sentimentScore[scoreKey] || 0) * 100).toFixed(2)); // display as percentage
+			const scoreKey = sentimentMap[awsSentiment] as keyof typeof sentimentScore || 'Neutral';
+			const dominantScore = Number(
+				((response.SentimentScore?.[scoreKey] || 0) * 100).toFixed(2) // display as percentage
+			); 
 
+			// leaving in for debugging or response confirmation purposes
 			console.log("AWS RESPONSE:", response);
 
 			setResults(prev => [
@@ -111,31 +99,10 @@ function App() {
 		console.log('Updated results:', results);
 	}, [results]);
 
-	// // First sort approach
-	// const sortedResults = results
-	// .map(result => ({
-	// ...result,
-	// priority: SENTIMENT_PRIORITY[result.sentiment],
-	// scoreValue: result.score
-	// }))
-	// .sort((a, b) => {
-	// // Sort by sentiment priority
-	// if (a.priority !== b.priority) return a.priority - b.priority;
-	// // Sort by score within the same sentiment
-	// return b.scoreValue - a.scoreValue;
-	// });
-
-	// bucket sort approach
-	// slightly more effecient approach
-	// both work and either can be used
-	const sortedResults = results.reduce((acc, result) => {
-		const priority = SENTIMENT_PRIORITY[result.sentiment];
-		acc[priority].push(result);
-		return acc;
-	  }, [[], [], [], []] as SentimentResult[][])
-		.flatMap(bucket => 
-		  bucket.sort((a, b) => b.score - a.score)
-		);
+	const sortedResults = useMemo(() => 
+		results.slice().sort(compareSentiments), 
+		[results]
+	);
 
 	return (
 		<div className="App">
@@ -148,14 +115,23 @@ function App() {
 				/>
 				<button type="submit">Get Sentiment</button>
 			</form>
-			<ul>
-                {sortedResults.map((result, index) => (
-                    <li key={index}>
-                        <p>{result.text}</p>
-                        <p>{result.sentiment} | {result.score}%</p>
-                    </li>
-                ))}
-            </ul>
+			<ul className="results-list">
+				{sortedResults.map((result, index) => (
+					<li key={index} className="result-item">
+					<div className="text-block">
+						<p className="input-text">{result.text}</p>
+						<div className="sentiment-display">
+						<span className={`sentiment-tag ${result.sentiment}`}>
+							{result.sentiment}
+						</span>
+						<span className="sentiment-score">
+							{result.score}%
+						</span>
+						</div>
+					</div>
+					</li>
+				))}
+			</ul>
 		</div>
 	);
 }

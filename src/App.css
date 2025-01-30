@@ -36,3 +36,42 @@
     transform: rotate(360deg);
   }
 }
+
+.results-list {
+  list-style: none;
+  padding: 0;
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.result-item {
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.sentiment-display {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.sentiment-tag {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.sentiment-tag.positive { background: #d4edda; color: #155724; }
+.sentiment-tag.negative { background: #f8d7da; color: #721c24; }
+.sentiment-tag.neutral { background: #fff3cd; color: #856404; }
+.sentiment-tag.mixed { background: #d1ecf1; color: #0c5460; }
+
+.sentiment-score {
+  font-weight: 600;
+  color: #2c3e50;
+}

@@ -55,3 +55,34 @@ Tests
     ├── Dominant Sentiment Cases
     ├── Confidence Comparisons
     └── Edge Case Handling
+
+
+Assumption: test only the sorting logic
+
+
+
+// // First sort approach
+// const sortedResults = results
+// .map(result => ({
+// ...result,
+// priority: SENTIMENT_PRIORITY[result.sentiment],
+// scoreValue: result.score
+// }))
+// .sort((a, b) => {
+// // Sort by sentiment priority
+// if (a.priority !== b.priority) return a.priority - b.priority;
+// // Sort by score within the same sentiment
+// return b.scoreValue - a.scoreValue;
+// });
+
+// bucket sort approach
+// slightly more effecient approach
+// both work and either can be used
+// const sortedResults = results.reduce((acc, result) => {
+// 	const priority = SENTIMENT_PRIORITY[result.sentiment];
+// 	acc[priority].push(result);
+// 	return acc;
+//   }, [[], [], [], []] as SentimentResult[][])
+// 	.flatMap(bucket => 
+// 	  bucket.sort((a, b) => b.score - a.score)
+// 	);
