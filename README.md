@@ -11,6 +11,10 @@
 1. Testing suite is only to cover the sorting logic as per the requirements documentation. No testing included for UI interactions or API calls
 2. Presumed ordering is: positive > neutral > mixed > negative
 3. Only using the dominant sentiment score is fine for this use case
+### Confessions:
+ - I spent more than the alloted time period of 3 hours on this project (probably 6 hours off the top of my head
+ - I ran into tedious dependancy issues and I also wanted to experiment with various approaches, mostly around how I would be doing the sorting (examples can be seen in the misc-notes.txt file)
+ - I made use of Copilot/Chatgpt to assist me with the styling of the page as well as checking the effeciency of my alogorithms and approach
 ## High level diagram
 ![social-assessment-high-level](https://github.com/user-attachments/assets/ee506868-9a36-41ef-b81a-707b03ef4c9c)
 ## Original UI diagram
