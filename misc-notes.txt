@@ -32,3 +32,26 @@ Dont go overboard here, sometimes less is more. Doing too much might be perceive
 TODO: Create a readme
 TODO: Create a high level diagram for the project
 TODO: Include .env template 
+TODO: Styling for page
+TODO: Screenshot of app in readme
+TODO: My approach as well as assumptions in readme, especialy around ordering of sentiments, also include why i left out the other scores
+TODO: Unit tests using JEST
+TODO: Styling: Colors for each sentiment type, page styling etc
+
+Want it to look something like this:
+
+App.tsx
+├── Form Component
+│   ├── Text Input
+│   └── Submit Button
+├── Sentiment List
+│   ├── Sort Function
+│   ├── SentimentBar
+│   └── List Item
+└── AWS Comprehend Integration
+
+Tests
+└── sort.test.ts
+    ├── Dominant Sentiment Cases
+    ├── Confidence Comparisons
+    └── Edge Case Handling
