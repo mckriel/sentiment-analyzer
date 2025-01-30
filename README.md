@@ -3,7 +3,7 @@
 
 ### Approach
  - Only the sentiment score of the return sentiment will be displayed. This is to avoid clutter, provide a cleaner UI and not overload the user with information
- - Two primary files are to be used, namely
+ - Two primary files are to be used, namely app.tsx and app.test.tsx
  - Test suite will only cover the sorting logic
  - Effiency and time complexity of sorting function was taken into consideration, however ultimately decided to go with the cleanest and most readable approach. See `misc-notes.txt` in root directory
 ### Assumptions:
