@@ -1,7 +1,5 @@
 # Sentiment Analyzer
 <img width="575" alt="Screenshot 2025-01-30 at 13 46 35" src="https://github.com/user-attachments/assets/10ba5fa5-7fd0-485c-a1f6-9f03055b039d" />
-
-## Approach and assumptions
 ### Approach
 1. Only the sentiment score of the return sentiment will be displayed. This is to avoid clutter, provide a cleaner UI and not overload the user with information
 2. Two primary files are to be used, namely
