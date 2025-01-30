@@ -52,15 +52,12 @@ export const SENTIMENT_PRIORITY: Record<string, number> = {
 };
 
 export function compareSentiments(a: SentimentResult | null, b: SentimentResult | null): number {
-	// Handle null/undefined cases
 	// handle null or undefined
     if (a === null || a === undefined) {
         if (b === null || b === undefined) return 0;
         return 1;
     }
     if (b === null || b === undefined) return -1;
-  
-	// Handle same object reference
 	if (a === b) return 0;
 
 
@@ -73,10 +70,10 @@ export function compareSentiments(a: SentimentResult | null, b: SentimentResult 
 
 	if (priorityA !== priorityB) return priorityA - priorityB;
 
-	// Handle identical scores
+	// handle identical scores
 	if (a.score === b.score) {
-		// Maintain original order for identical scores
-		return a.text.localeCompare(b.text); // Fallback to text comparison
+		// maintain original order for identical scores
+		return a.text.localeCompare(b.text); // fallback to text comparison
 	}
 
 	return b.score - a.score;
@@ -95,7 +92,6 @@ function App() {
 			secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY!,
 		} 
 	});
-
 	
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
