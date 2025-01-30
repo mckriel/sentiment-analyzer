@@ -6,7 +6,7 @@
     "@aws-sdk/client-comprehend": "^3.734.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@mui/material": "^6.4.1",
+    "@mui/material": "^6.4.2",
     "cra-template-typescript": "1.2.0",
     "dotenv": "^16.4.7",
     "framer-motion": "^12.0.6",

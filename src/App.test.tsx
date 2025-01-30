@@ -14,48 +14,50 @@ jest.mock('@aws-sdk/client-comprehend', () => ({
 
 
 // SECTION: 
-describe('sentiment analysis app', () => {
-	const mockSentimentResponse = (sentiment: string, score: number) => ({
-		Sentiment: sentiment,
-		SentimentScore: {
-		  Positive: sentiment === 'POSITIVE' ? score : 0,
-		  Negative: sentiment === 'NEGATIVE' ? score : 0,
-		  Neutral: sentiment === 'NEUTRAL' ? score : 0,
-		  Mixed: sentiment === 'MIXED' ? score : 0
-		}
-	});
+describe('compareSentiments', () => {
+	const testData1: SentimentResult[] = [
+		{ text: 'A', sentiment: 'negative', score: 0.9 },
+		{ text: 'B', sentiment: 'positive', score: 0.8 },
+		{ text: 'C', sentiment: 'positive', score: 0.9 },
+		{ text: 'D', sentiment: 'neutral', score: 0.7 }
+	];
 
-	beforeEach(() => {
-		jest.clearAllMocks();
-	});
+	const testData2: (SentimentResult | null)[] = [
+		{ text: "A", sentiment: "positive", score: 95 },
+		{ text: "B", sentiment: "neutral", score: 80 },
+		{ text: "C", sentiment: "positive", score: 95 }, // Same score as A
+		null,
+	];
 
 	describe('sorting algorithm', () => {
-		const testResults: SentimentResult[] = [
-			{ text: 'A', sentiment: 'negative', score: 0.9 },
-			{ text: 'B', sentiment: 'positive', score: 0.8 },
-			{ text: 'C', sentiment: 'positive', score: 0.9 },
-			{ text: 'D', sentiment: 'neutral', score: 0.7 }
-		];
 
 		test('sorts by sentiment priority (POSITIVE > NEUTRAL > MIXED > NEGATIVE)', () => {
-			const sorted = testResults.slice().sort(compareSentiments);
+			const sorted = testData1.slice().sort(compareSentiments);
 			expect(sorted.map(r => r.text)).toEqual(['C', 'B', 'D', 'A']);
 		});
 	  
 		test('sorts by score descending within same sentiment', () => {
-			const positiveOnly = testResults.filter(r => r.sentiment === 'positive');
+			const positiveOnly = testData1.filter(r => r.sentiment === 'positive');
 			const sorted = positiveOnly.slice().sort(compareSentiments);
 			expect(sorted[0].score).toBeGreaterThan(sorted[1].score);
 		});
 
-		it('returns 0 for identical sentiment scores of the same sentiment', () => {
+		test('returns 0 for identical sentiment scores of the same sentiment', () => {
 			const a = { sentiment: 'neutral', score: 0.7, text: '' };
 			const b = { sentiment: 'neutral', score: 0.7, text: '' };
 			expect(compareSentiments(a, b)).toBe(0);
 		});
-	  
+
+		test('sorts null values to the bottom', () => {
+			const sorted = [...testData2].sort(compareSentiments);
+			expect(sorted[sorted.length - 1]).toBeNull();
+		});
+
+		test('handles identical objects', () => {
+			const a = testData2[0]!;
+			expect(compareSentiments(a, a)).toBe(0);
+		});
 	});
-	
 });
 
 
