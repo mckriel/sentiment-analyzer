@@ -38,28 +38,11 @@ TODO: My approach as well as assumptions in readme, especialy around ordering of
 TODO: Unit tests using JEST
 TODO: Styling: Colors for each sentiment type, page styling etc
 
-Want it to look something like this:
-
-App.tsx
-├── Form Component
-│   ├── Text Input
-│   └── Submit Button
-├── Sentiment List
-│   ├── Sort Function
-│   ├── SentimentBar
-│   └── List Item
-└── AWS Comprehend Integration
-
-Tests
-└── sort.test.ts
-    ├── Dominant Sentiment Cases
-    ├── Confidence Comparisons
-    └── Edge Case Handling
-
-
 Assumption: test only the sorting logic
 
 
+
+Some approaches I used for the sorting
 
 // // First sort approach
 // const sortedResults = results
