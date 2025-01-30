@@ -11,7 +11,7 @@
  - Presumed ordering is: positive > neutral > mixed > negative
  - Only using the dominant sentiment score is fine for this use case
 ### Confessions:
- - I spent more than the alloted time period of 3 hours on this project (probably 6 hours off the top of my head
+ - I spent more than the alloted time period of 3 hours on this project (probably 6 hours off the top of my head)
  - I ran into tedious dependancy issues and I also wanted to experiment with various approaches, mostly around how I would be doing the sorting (examples can be seen in the misc-notes.txt file)
  - I made use of Copilot/Chatgpt to assist me with the styling of the page as well as checking the effeciency of my alogorithms and approach
 
