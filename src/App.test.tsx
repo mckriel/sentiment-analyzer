@@ -1,20 +1,17 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import App, { compareSentiments, SentimentResult  } from './App';
-import { ComprehendClient, DetectSentimentCommand } from '@aws-sdk/client-comprehend';
 
 describe('compareSentiments', () => {
 	const testData1: SentimentResult[] = [
-		{ text: 'A', sentiment: 'negative', score: 0.9 },
-		{ text: 'B', sentiment: 'positive', score: 0.8 },
-		{ text: 'C', sentiment: 'positive', score: 0.9 },
-		{ text: 'D', sentiment: 'neutral', score: 0.7 }
+		{ id: 1, text: 'A', sentiment: 'negative', score: 0.9 },
+		{ id: 2, text: 'B', sentiment: 'positive', score: 0.8 },
+		{ id: 3, text: 'C', sentiment: 'positive', score: 0.9 },
+		{ id: 4, text: 'D', sentiment: 'neutral', score: 0.7 }
 	];
 
 	const testData2: (SentimentResult | null)[] = [
-		{ text: "A", sentiment: "positive", score: 95 },
-		{ text: "B", sentiment: "neutral", score: 80 },
-		{ text: "C", sentiment: "positive", score: 95 }, // Same score as A
+		{ id: 1, text: "A", sentiment: "positive", score: 95 },
+		{ id: 2, text: "B", sentiment: "neutral", score: 80 },
+		{ id: 3, text: "C", sentiment: "positive", score: 95 }, // Same score as A
 		null,
 	];
 
@@ -32,8 +29,8 @@ describe('compareSentiments', () => {
 		});
 
 		test('returns 0 for identical sentiment scores of the same sentiment', () => {
-			const a = { sentiment: 'neutral', score: 0.7, text: '' };
-			const b = { sentiment: 'neutral', score: 0.7, text: '' };
+			const a = { id: 1, sentiment: 'neutral', score: 0.7, text: '' };
+			const b = { id: 2, sentiment: 'neutral', score: 0.7, text: '' };
 			expect(compareSentiments(a, b)).toBe(0);
 		});
 

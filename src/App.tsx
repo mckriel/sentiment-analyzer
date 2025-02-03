@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { ComprehendClient, DetectSentimentCommand } from '@aws-sdk/client-comprehend';
 import './App.css';
 import { 
@@ -37,6 +37,7 @@ const AnimatedContainer = styled(Paper)(({ theme }) => ({
 }));
 
 export interface SentimentResult {
+	id: number,
 	text: string,
 	sentiment: string,
 	score: number,
@@ -85,15 +86,15 @@ function App() {
 	const [results, setResults] = useState<SentimentResult[]>([]);
 
 	// aws configuration
-	const client = new ComprehendClient({ 
+	const client = useMemo(() => new ComprehendClient({
 		region: process.env.REACT_APP_AWS_REGION,
 		credentials: {
 			accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID!,
 			secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY!,
-		} 
-	});
+		}
+	}), [process.env.REACT_APP_AWS_REGION, process.env.REACT_APP_AWS_ACCESS_KEY_ID, process.env.REACT_APP_AWS_SECRET_ACCESS_KEY]);	
 	
-	const handleSubmit = async (event: React.FormEvent) => {
+	const handleSubmit = useCallback(async (event: React.FormEvent) => {
 		event.preventDefault();
 
 		if (!inputText.trim()) return;
@@ -133,6 +134,7 @@ function App() {
 
 			setResults(prev => [
 				{
+					id: new Date().getTime(),
 					text: inputText,
 					sentiment: awsSentiment.toLowerCase(),
 					score: dominantScore
@@ -145,7 +147,7 @@ function App() {
 		catch (error) {
 			console.log(`Analysis failed: ${error}`);
 		}
-	};
+	}, [inputText, client]);
 
 	useEffect(() => {
 		console.log('Updated results:', results);
@@ -214,9 +216,8 @@ function App() {
 			<List sx={{ mt: 4 }}>
 				{sortedResults.map((result, index) => (
 				<Zoom 
-					key={index} 
-					in 
-					timeout={(index + 1) * 200}
+					key={result.id} 
+					in timeout={(index + 1) * 200}
 					style={{ transitionDelay: `${index * 50}ms` }}
 				>
 					<SentimentItem>
